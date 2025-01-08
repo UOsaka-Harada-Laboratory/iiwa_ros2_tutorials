@@ -51,6 +51,7 @@ RUN apt update -y && apt upgrade -y && apt install -y --no-install-recommends \
     unzip \
     gnupg \
     byobu \
+    cmake \
     curl \
     wget \
     dbus \
@@ -73,6 +74,7 @@ RUN apt install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-colcon-mixin \
     ros-humble-rmw-cyclonedds-cpp \
+    ros-humble-ament-cmake \
     ros-humble-warehouse-* \
     ros-humble-gazebo-* \
     ros-humble-desktop \
@@ -127,6 +129,20 @@ RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/move
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/moveit_ros/hybrid_planning/COLCON_IGNORE && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/moveit_ros/robot_interaction/COLCON_IGNORE && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
 
+# lbr_fri_ros2_stack
+WORKDIR /root/ros2_ws/src
+RUN apt install -y --no-install-recommends ros-dev-tools && \
+    /bin/bash -c "source /opt/ros/humble/setup.bash" && \
+    export FRI_CLIENT_VERSION=1.15 && \
+    mkdir -p lbr-stack/src && cd lbr-stack && \
+    vcs import src --input https://raw.githubusercontent.com/lbr-stack/lbr_fri_ros2_stack/humble/lbr_fri_ros2_stack/repos-fri-${FRI_CLIENT_VERSION}.yaml && \
+    rosdep install --from-paths src -i -r -y
+WORKDIR /root/ros2_ws
+RUN apt install -y --no-install-recommends ros-humble-kinematics-interface
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release" && \
+    /bin/bash -c "source /root/ros2_ws/install/setup.bash"
+
 # Generates bash commands
 WORKDIR /catkin_ws/src/
-RUN echo "" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock.rviz" >> ~/.bash_history
