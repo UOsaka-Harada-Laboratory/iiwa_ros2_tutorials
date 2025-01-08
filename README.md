@@ -40,12 +40,17 @@
     ```bash
     docker compose up
     ```
-2. Enter the docker container built
+2. Confirm the lbr_fri_ros2_stack was installed successfully in another terminal
+    ```bash
+    ./utils/test_lbr_fri_ros2_stack.sh
+    ```
+    <img src=image/test_lbr_fri_ros2_stack.png width=500>  
+3. Execute the demos with the real robot
+    - You can find how to execute [demos](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_demos/doc/lbr_demos.html)
+    - When you execute the ros2 commands, enter the container your built  
     ```bash
     xhost + && docker exec -it iiwa_ros2_container bash
     ```
-3. Execute the demos
-    - You can find how to execute [demos](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_demos/doc/lbr_demos.html)
 
 ## Author / Contributor
 

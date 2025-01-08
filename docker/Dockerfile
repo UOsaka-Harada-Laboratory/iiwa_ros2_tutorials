@@ -26,6 +26,7 @@ RUN apt update -y && apt upgrade -y && apt install -y --no-install-recommends \
     software-properties-common \
     texlive-fonts-recommended \
     texlive-latex-extra \
+    iputils-ping net-tools \
     libxkbcommon-x11-0 \
     gnome-screenshot \
     libcanberra-gtk* \
