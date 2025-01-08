@@ -1,0 +1,132 @@
+# base image
+FROM nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
+
+# setting environmental variables
+ENV DEBIAN_FRONTEND noninteractive
+ARG MAKEFLAGS
+ARG PARALLELWORKERS
+ARG DISPLAY
+ARG WAYLAND_DISPLAY
+ARG XDG_RUNTIME_DIR
+ARG PULSE_SERVER
+ENV MAKEFLAGS $MAKEFLAGS
+ENV PARALLELWORKERS $PARALLELWORKERS
+ENV DISPLAY $DISPLAY
+ENV WAYLAND_DISPLAY $WAYLAND_DISPLAY
+ENV XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+ENV PULSE_SERVER $PULSE_SERVER
+ENV __NV_PRIME_RENDER_OFFLOAD 1
+ENV __GLX_VENDOR_LIBRARY_NAME nvidia
+
+# setting time zone
+RUN apt update && apt install -y --no-install-recommends tzdata
+ENV TZ=Asia/Tokyo
+
+RUN apt update -y && apt upgrade -y && apt install -y --no-install-recommends \
+    software-properties-common \
+    texlive-fonts-recommended \
+    texlive-latex-extra \
+    libxkbcommon-x11-0 \
+    gnome-screenshot \
+    libcanberra-gtk* \
+    build-essential \
+    libgl1-mesa-dev \
+    nvidia-settings \
+    nvidia-prime \
+    lsb-release \
+    libudev-dev \
+    imagemagick \
+    python3-pip \
+    python3-tk \
+    mesa-utils \
+    net-tools \
+    aptitude \
+    xorg-dev \
+    x11-apps \
+    libfuse2 \
+    cm-super \
+    texlive \
+    libxcb* \
+    dvipng \
+    unzip \
+    gnupg \
+    byobu \
+    curl \
+    wget \
+    dbus \
+    git \
+    vim \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
+# adding the ROS2 GPG key with apt and add the repository to your sources list
+RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+RUN /bin/bash -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null'
+
+# updating mesa (fix the issue of displaying black world in Rviz2 and Gazebo)
+# https://github.com/ros2/rviz/issues/948
+RUN add-apt-repository ppa:kisak/kisak-mesa -y && apt update -y
+
+# installing ROS2 packages and colcon build system with mixin
+# changing the middleware (CycloneDDS recommended for MoveIt2)
+RUN apt install -y --no-install-recommends \
+    python3-colcon-common-extensions \
+    python3-colcon-mixin \
+    ros-humble-rmw-cyclonedds-cpp \
+    ros-humble-warehouse-* \
+    ros-humble-gazebo-* \
+    ros-humble-desktop \
+    ros-humble-moveit* \
+    ros-dev-tools \
+    gazebo \
+    && echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
+
+RUN /bin/bash -c "colcon mixin add default https://raw.githubusercontent.com/colcon/colcon-mixin-repository/master/index.yaml && colcon mixin update default"
+
+RUN mkdir -p /tmp/
+RUN mkdir -p /root/ros2_ws/src
+WORKDIR /root/ros2_ws
+RUN	/bin/bash -c "source /opt/ros/humble/setup.bash && colcon build"
+RUN	echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
+	echo "source /root/ros2_ws/install/setup.bash" >> ~/.bashrc && \
+	echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/root/ros2_ws" >> ~/.bashrc && \
+	echo "export ROS_WORKSPACE=/root/ros2_ws" >> ~/.bashrc && \
+    echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc && \
+    echo "export _colcon_cd_root=/opt/ros/humble/" >> ~/.bashrc
+
+# building ros2 packages
+WORKDIR /root/ros2_ws/src
+RUN git clone https://github.com/ros-simulation/gazebo_ros2_control.git -b humble --recursive && \
+    cd gazebo_ros2_control && \
+    git reset --hard b49ed0b
+RUN git clone https://github.com/ros-planning/moveit_msgs.git -b humble --recursive && \
+    cd moveit_msgs && \
+    git reset --hard 99e6898
+RUN git clone https://github.com/ros-planning/moveit_resources.git -b humble --recursive && \
+    cd moveit_resources && \
+    git reset --hard 45ea355
+RUN git clone https://github.com/moveit/moveit2.git -b 2.5.6 --recursive && \
+    cd moveit2 && \
+    git reset --hard c2b0e3d
+COPY ./ros2_ws/src/moveit_configs_utils/launches.py /root/ros2_ws/src/moveit2/moveit_configs_utils/moveit_configs_utils/
+RUN git clone https://github.com/ros-planning/moveit_task_constructor.git -b humble --recursive && \
+    cd moveit_task_constructor && \
+    git reset --hard a4daede
+RUN git clone https://github.com/ros-planning/srdfdom.git -b ros2 --recursive && \
+    cd srdfdom && \
+    git reset --hard c118b35
+WORKDIR /root/ros2_ws/
+RUN /bin/bash -c "rosdep init && rosdep update && rosdep install -r --from-paths . --ignore-src --rosdistro humble -y"
+
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/COLCON_IGNORE"
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/robot_interaction/COLCON_IGNORE"
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/hybrid_planning/COLCON_IGNORE"
+WORKDIR /root/ros2_ws/
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/COLCON_IGNORE && colcon build --executor sequential --symlink-install --mixin release"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/moveit_ros/hybrid_planning/COLCON_IGNORE && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/moveit_ros/robot_interaction/COLCON_IGNORE && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
+
+# Generates bash commands
+WORKDIR /catkin_ws/src/
+RUN echo "" >> ~/.bash_history
