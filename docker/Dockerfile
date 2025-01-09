@@ -208,3 +208,10 @@ RUN echo "cp --force /yaml/lbr_system_config_moveit.yaml /root/ros2_ws/src/lbr-s
 RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=mock rviz:=true model:=iiwa14" >> ~/.bash_history
+
+# moveit w/ cpp via rviz (hardware)
+RUN echo "cp --force /yaml/lbr_system_config_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py moveit:=true model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_moveit_cpp hello_moveit.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
