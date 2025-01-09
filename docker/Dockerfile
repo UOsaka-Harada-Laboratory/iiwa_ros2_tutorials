@@ -160,3 +160,8 @@ RUN echo "cp --force /yaml/lbr_system_config_torque_command_controller.yaml /roo
 RUN echo "cp --force /yaml/lbr_controllers_torque_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_torque_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_cpp torque_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+# wrench command controller
+RUN echo "cp --force /yaml/lbr_system_config_wrench_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_wrench_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_wrench_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_cpp wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
