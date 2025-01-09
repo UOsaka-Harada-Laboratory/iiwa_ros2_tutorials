@@ -174,3 +174,27 @@ RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_wrench_command_co
 RUN echo "ros2 run lbr_demos_cpp wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_py wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
 
+# twist controller 
+RUN echo "cp --force /yaml/lbr_system_config_twist_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_twist_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=twist_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 topic pub --rate 100 /lbr/command/twist geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.05}, angular: {x: 0.0, y: 0.0, z: 0.0}}"" >> ~/.bash_history
+
+# admittance controller 
+RUN echo "cp --force /yaml/lbr_system_config_admittance_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_admittance_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_advanced_py admittance_control --ros-args -r __ns:=/lbr --params-file `ros2 pkg prefix lbr_demos_advanced_py`/share/lbr_demos_advanced_py/config/admittance_control.yaml" >> ~/.bash_history
+
+# admittance controller w/ rcm
+RUN echo "cp --force /yaml/lbr_system_config_admittance_rcm_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_admittance_rcm_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_advanced_py admittance_rcm_control --ros-args -r __ns:=/lbr --params-file `ros2 pkg prefix lbr_demos_advanced_py`/share/lbr_demos_advanced_py/config/admittance_rcm_control.yaml" >> ~/.bash_history
+
+# pose controller
+RUN echo "cp --force /yaml/lbr_system_config_pose_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_pose_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_advanced_cpp pose_control --ros-args -r __ns:=/lbr" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_advanced_cpp pose_planning --ros-args -r __ns:=/lbr" >> ~/.bash_history
