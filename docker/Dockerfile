@@ -143,7 +143,7 @@ WORKDIR /root/ros2_ws
 RUN apt install -y --no-install-recommends ros-humble-kinematics-interface
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release" && \
     /bin/bash -c "source /root/ros2_ws/install/setup.bash"
-RUN pip install pyoptas cadadi
+RUN pip install pyoptas casadi
 
 # Generates bash commands
 WORKDIR /root/ros2_ws/src/
