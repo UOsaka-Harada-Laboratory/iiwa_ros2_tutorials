@@ -74,11 +74,12 @@ RUN add-apt-repository ppa:kisak/kisak-mesa -y && apt update -y
 RUN apt install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-colcon-mixin \
+    ros-humble-desktop \
     ros-humble-rmw-cyclonedds-cpp \
     ros-humble-ament-cmake \
     ros-humble-warehouse-* \
     ros-humble-gazebo-* \
-    ros-humble-desktop \
+    ros-humble-ros-gz* \
     ros-humble-moveit* \
     ros-dev-tools \
     gazebo \
@@ -144,6 +145,10 @@ RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor p
     /bin/bash -c "source /root/ros2_ws/install/setup.bash"
 
 # Generates bash commands
-WORKDIR /catkin_ws/src/
+WORKDIR /root/ros2_ws/src/
+# visualize a model with rviz
 RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock.rviz" >> ~/.bash_history
+# joint position command controller
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_cpp joint_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history

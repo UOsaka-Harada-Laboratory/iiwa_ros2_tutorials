@@ -19,7 +19,7 @@ services:
             - /dev:/dev
             # to tansport X11 application (require xhost local:)
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
-            # ros catkin dir
+            # ros2 dir
             - ./ros2_ws/src:/ros2_ws/src
         privileged: true
         tty: true
