@@ -81,6 +81,8 @@ RUN apt install -y --no-install-recommends \
     ros-humble-gazebo-* \
     ros-humble-ros-gz* \
     ros-humble-moveit* \
+    ros-humble-ros2-control \
+    ros-humble-ros2-controllers \
     ros-dev-tools \
     gazebo \
     && echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
@@ -150,18 +152,25 @@ WORKDIR /root/ros2_ws/src/
 # visualize a model with rviz
 RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock.rviz" >> ~/.bash_history
+
 # joint position command controller
 RUN echo "cp --force /yaml/lbr_system_config_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_cpp joint_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_py joint_trajectory_client --ros-args -r __ns:=/lbr" >> ~/.bash_history
+
 # torque command controller
 RUN echo "cp --force /yaml/lbr_system_config_torque_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_torque_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_torque_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_cpp torque_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_py torque_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+
 # wrench command controller
 RUN echo "cp --force /yaml/lbr_system_config_wrench_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_wrench_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_wrench_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_cpp wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_py wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+
