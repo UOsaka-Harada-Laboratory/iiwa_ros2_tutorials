@@ -198,3 +198,13 @@ RUN echo "cp --force /yaml/lbr_controllers_pose_controller.yaml /root/ros2_ws/sr
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_advanced_cpp pose_control --ros-args -r __ns:=/lbr" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_advanced_cpp pose_planning --ros-args -r __ns:=/lbr" >> ~/.bash_history
+
+# moveit via rviz (simulation)
+RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=mock rviz:=true model:=iiwa14" >> ~/.bash_history
+
+# moveit via rviz (hardware)
+RUN echo "cp --force /yaml/lbr_system_config_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=mock rviz:=true model:=iiwa14" >> ~/.bash_history
