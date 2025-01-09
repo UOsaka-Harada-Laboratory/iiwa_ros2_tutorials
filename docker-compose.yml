@@ -20,7 +20,7 @@ services:
             # to tansport X11 application (require xhost local:)
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
             # ros2 dir
-            - ./ros2_ws/src:/ros2_ws/src
+            - ./yaml:/yaml
         privileged: true
         tty: true
         network_mode: host

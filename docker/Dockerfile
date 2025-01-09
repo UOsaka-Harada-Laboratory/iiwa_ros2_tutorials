@@ -143,6 +143,7 @@ WORKDIR /root/ros2_ws
 RUN apt install -y --no-install-recommends ros-humble-kinematics-interface
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release" && \
     /bin/bash -c "source /root/ros2_ws/install/setup.bash"
+RUN pip install pyoptas cadadi
 
 # Generates bash commands
 WORKDIR /root/ros2_ws/src/
@@ -150,5 +151,12 @@ WORKDIR /root/ros2_ws/src/
 RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock.rviz" >> ~/.bash_history
 # joint position command controller
+RUN echo "cp --force /yaml/lbr_system_config_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_joint_position_command_controller model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_cpp joint_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
+# torque command controller
+RUN echo "cp --force /yaml/lbr_system_config_torque_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_torque_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_torque_command_controller model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 run lbr_demos_cpp torque_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
