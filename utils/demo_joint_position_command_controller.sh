@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# FRI send period: 10 ms
+# IP address: your configuration
+# FRI control mode: POSITION_CONTROL
+# FRI client command mode: POSITION
+
 byobu new-session -d -s demo_joint_position_command_controller
 byobu select-pane -t 0
 byobu split-window -v
