@@ -1,4 +1,0 @@
-[submodule "docker/ros2_ws/src/lbr_fri_ros2_stack"]
-	path = docker/ros2_ws/src/lbr_fri_ros2_stack
-	url = https://github.com/takuya-ki/lbr_fri_ros2_stack.git
-	branch = humble
