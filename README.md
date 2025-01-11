@@ -51,6 +51,10 @@
     ```bash
     xhost + && docker exec -it iiwa_ros2_container bash
     ```
+    - You can find scripts in iiwa_ros2_tutorials/utils to execute all necessary commands for each demonstration
+    ```bash
+    ./utils/XXX.sh
+    ```
 
 ## Author / Contributor
 

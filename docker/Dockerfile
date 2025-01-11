@@ -137,10 +137,10 @@ RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/move
 WORKDIR /root/ros2_ws/src
 COPY ./yaml/repos-fri-1.15.yaml /tmp/
 # https://raw.githubusercontent.com/lbr-stack/lbr_fri_ros2_stack/humble/lbr_fri_ros2_stack/repos-fri-${FRI_CLIENT_VERSION}.yaml
-RUN apt install -y --no-install-recommends ros-dev-tools && \
-    /bin/bash -c "source /opt/ros/humble/setup.bash" && \
+# vcs import src --input /tmp/repos-fri-1.15.yaml
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash" && \
     mkdir -p lbr-stack/src && cd lbr-stack && \
-    vcs import src --input /tmp/repos-fri-1.15.yaml && \
+    vcs import src --input https://raw.githubusercontent.com/lbr-stack/lbr_fri_ros2_stack/humble/lbr_fri_ros2_stack/repos-fri-1.15.yaml && \
     rosdep install --from-paths src -i -r -y
 WORKDIR /root/ros2_ws
 RUN apt install -y --no-install-recommends ros-humble-kinematics-interface
