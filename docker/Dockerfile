@@ -175,12 +175,6 @@ RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=lbr_wrench_command_co
 RUN echo "ros2 run lbr_demos_cpp wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
 RUN echo "ros2 run lbr_demos_py wrench_sine_overlay --ros-args -r __ns:=/lbr" >> ~/.bash_history
 
-# twist controller 
-RUN echo "cp --force /yaml/lbr_system_config_twist_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
-RUN echo "cp --force /yaml/lbr_controllers_twist_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
-RUN echo "ros2 launch lbr_bringup hardware.launch.py ctrl:=twist_controller model:=iiwa14" >> ~/.bash_history
-RUN echo "ros2 topic pub --rate 100 /lbr/command/twist geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.05}, angular: {x: 0.0, y: 0.0, z: 0.0}}"" >> ~/.bash_history
-
 # admittance controller 
 RUN echo "cp --force /yaml/lbr_system_config_admittance_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_admittance_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
