@@ -44,13 +44,16 @@
     ```bash
     ./utils/test_lbr_fri_ros2_stack.sh
     ```
-    <img src=image/test_lbr_fri_ros2_stack.png width=500>  
 3. Execute the demos with the real robot
     - You can find how to execute [demos](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_demos/doc/lbr_demos.html)
     - You can find scripts in iiwa_ros2_tutorials/utils to execute all necessary commands for each demonstration
     ```bash
     ./utils/XXX.sh
     ```
+
+### [./utils/test_lbr_fri_ros2_stack.sh](./utils/test_lbr_fri_ros2_stack.sh)
+
+<img src=image/test_lbr_fri_ros2_stack.png width=500>  
 
 ## Author / Contributor
 
