@@ -19,8 +19,9 @@ services:
             - /dev:/dev
             # to tansport X11 application (require xhost local:)
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
-            # ros2 dir
+            # shared dirs
             - ./yaml:/yaml
+            - ./ros2_ws/src/lbr_fri_ros2_stack:/root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack
         privileged: true
         tty: true
         network_mode: host
