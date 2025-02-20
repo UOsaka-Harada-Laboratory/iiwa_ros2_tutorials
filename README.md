@@ -30,7 +30,7 @@
 3. Set the IP as `172.31.1.148` to reach the IP `172.31.1.147` at robot controller side  
 4. Build the docker environment as below (if you use the docker, this must be set in docker container)  
     ```bash
-    sudo apt install byobu && git clone git@github.com:Osaka-University-Harada-Laboratory/iiwa_ros2_tutorials.git --depth 1 && cd iiwa_ros2_tutorials && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel  
+    sudo apt install byobu && git clone git@github.com:Osaka-University-Harada-Laboratory/iiwa_ros2_tutorials.git --recursive --depth 1 && cd iiwa_ros2_tutorials && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel  
     ```
 
 ## Usage with docker

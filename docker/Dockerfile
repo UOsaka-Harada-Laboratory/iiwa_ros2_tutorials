@@ -117,7 +117,7 @@ RUN git clone https://github.com/moveit/moveit2.git -b 2.5.6 --recursive && \
 COPY ./ros2_ws/src/moveit_configs_utils/launches.py /root/ros2_ws/src/moveit2/moveit_configs_utils/moveit_configs_utils/
 RUN git clone https://github.com/ros-planning/moveit_task_constructor.git -b humble --recursive && \
     cd moveit_task_constructor && \
-    git reset --hard a4daede
+    git reset --hard e704159
 RUN git clone https://github.com/ros-planning/srdfdom.git -b ros2 --recursive && \
     cd srdfdom && \
     git reset --hard c118b35
