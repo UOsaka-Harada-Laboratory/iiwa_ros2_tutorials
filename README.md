@@ -12,8 +12,8 @@
 ### Docker build environments
 
 - [Ubuntu 22.04 PC](https://ubuntu.com/certified/laptops?q=&limit=20&vendor=Dell&vendor=Lenovo&vendor=HP&release=22.04+LTS)
-  - Docker 27.3.1
-  - Docker Compose 2.29.7
+  - Docker 27.4.1
+  - Docker Compose 2.32.1
 
 ### LBR iiwa 14 R820
 
