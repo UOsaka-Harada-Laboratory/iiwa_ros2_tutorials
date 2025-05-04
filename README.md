@@ -26,9 +26,10 @@
 ## Installation
 
 1. Follow [Docs](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_fri_ros2_stack/doc/hardware_setup.html) to setup a package with Sunrise Workbench  
-2. Connect an Ethernet cable between the host computer and the Ethernet port of controller  
-3. Set the IP as `172.31.1.148` to reach the IP `172.31.1.147` at robot controller side  
-4. Build the docker environment as below (if you use the docker, this must be set in docker container)  
+2. If the SmartPAD fails to start properly, update the SmartHMI.exe.PdsFirmwareUpdate.config file located in C:/KRC/SmartHMI/ with [this](/smartpad/SmartHMI.exe.PdsFirmwareUpdate.config)  
+3. Connect an Ethernet cable between the host computer and the Ethernet port of controller  
+4. Set the IP as `172.31.1.150` to reach the IP `172.31.1.147` (robot controller side)  
+5. Build the docker environment as below (if you use the docker, this must be set in docker container)  
     ```bash
     sudo apt install byobu && git clone git@github.com:UOsaka-Harada-Laboratory/iiwa_ros2_tutorials.git --recursive --depth 1 && cd iiwa_ros2_tutorials && COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker compose build --no-cache --parallel  
     ```
