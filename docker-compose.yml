@@ -25,4 +25,4 @@ services:
         privileged: true
         tty: true
         network_mode: host
-        command: bash -c "source /opt/ros/humble/setup.bash && cd /root/ros2_ws && colcon build --executor parallel --symlink-install --mixin release && source /root/ros2_ws/install/setup.bash && bash"
+        command: bash -c "source /opt/ros/humble/setup.bash && cd /root/ros2_ws && colcon build --executor parallel --parallel-workers 2 --symlink-install --mixin release && source /root/ros2_ws/install/setup.bash && bash"

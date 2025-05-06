@@ -56,6 +56,10 @@
 
 <img src=image/bringup_lbr_urdf_ctrl.png width=500>  
 
+### [./utils/bringup_lbr_urdf_gui.sh](./utils/bringup_lbr_urdf_gui.sh)
+
+<img src=image/bringup_lbr_urdf_gui.gif width=500>  
+
 ## Author / Contributor
 
 [Takuya Kiyokawa](https://takuya-ki.github.io/)  

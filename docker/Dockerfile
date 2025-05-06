@@ -153,6 +153,10 @@ WORKDIR /root/ros2_ws/src/
 RUN echo "ros2 launch lbr_bringup mock.launch.py model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock.rviz" >> ~/.bash_history
 
+# visualize a model with rviz and gui
+RUN echo "ros2 launch lbr_bringup mock_gui.launch.py model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup rviz.launch.py rviz_cfg_pkg:=lbr_bringup rviz_cfg:=config/mock_gui.rviz" >> ~/.bash_history
+
 # joint position command controller
 RUN echo "cp --force /yaml/lbr_system_config_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_position_command_controller.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
