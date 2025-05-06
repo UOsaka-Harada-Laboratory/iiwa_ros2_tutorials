@@ -43,18 +43,18 @@
     ```
 2. Confirm the lbr_fri_ros2_stack was installed successfully in another terminal
     ```bash
-    ./utils/test_lbr_fri_ros2_stack.sh
+    ./utils/bringup_lbr_urdf_ctrl.sh
     ```
-3. Execute the demos with the real robot
+3. Kill the processes at step 2 and execute the demos with the real robot
     - You can find how to execute [demos](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_demos/doc/lbr_demos.html)
     - You can find scripts in iiwa_ros2_tutorials/utils to execute all necessary commands for each demonstration
     ```bash
     ./utils/XXX.sh
     ```
 
-### [./utils/test_lbr_fri_ros2_stack.sh](./utils/test_lbr_fri_ros2_stack.sh)
+### [./utils/bringup_lbr_urdf_ctrl.sh](./utils/bringup_lbr_urdf_ctrl.sh)
 
-<img src=image/test_lbr_fri_ros2_stack.png width=500>  
+<img src=image/bringup_lbr_urdf_ctrl.png width=500>  
 
 ## Author / Contributor
 
