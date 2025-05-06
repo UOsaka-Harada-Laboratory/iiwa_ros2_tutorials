@@ -68,6 +68,10 @@
 
 <img src=image/demo_moveit_simulation_cpp.gif width=500>  
 
+### [./utils/demo_moveit_simulation_py.sh](./utils/demo_moveit_simulation_py.sh)
+
+<img src=image/demo_moveit_simulation_py.gif width=500>  
+
 ## Author / Contributor
 
 [Takuya Kiyokawa](https://takuya-ki.github.io/)  
