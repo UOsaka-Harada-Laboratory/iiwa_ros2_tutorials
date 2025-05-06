@@ -60,6 +60,10 @@
 
 <img src=image/bringup_lbr_urdf_gui.gif width=500>  
 
+### [./utils/demo_moveit_simulation_cpp.sh](./utils/demo_moveit_simulation_cpp.sh)
+
+<img src=image/demo_moveit_simulation_cpp.gif width=500>  
+
 ## Author / Contributor
 
 [Takuya Kiyokawa](https://takuya-ki.github.io/)  
