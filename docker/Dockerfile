@@ -212,14 +212,21 @@ RUN echo "ros2 launch lbr_bringup mock.launch.py moveit:=true model:=iiwa14" >> 
 RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=mock model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_moveit_cpp hello_moveit.launch.py mode:=mock model:=iiwa14" >> ~/.bash_history
 
-# moveit w/ cpp via rviz (simulation) in the robot coordinate system
+# moveit w/ py via rviz (simulation) in the robot coordinate system
 RUN echo "ros2 launch lbr_bringup mock.launch.py moveit:=true model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=mock model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_moveit_py hello_moveit.launch.py mode:=mock model:=iiwa14" >> ~/.bash_history
+
+# moveit w/ cpp via rviz (hardware)
+RUN echo "cp --force /yaml/lbr_system_config_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
+RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup hardware.launch.py moveit:=true model:=iiwa14 sim:=true base_frame:=world" >> ~/.bash_history
+RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
+RUN echo "ros2 launch lbr_moveit_cpp hello_moveit.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
 
 # moveit w/ py via rviz (hardware)
 RUN echo "cp --force /yaml/lbr_system_config_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_system_config.yaml" >> ~/.bash_history
 RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack/lbr_description/ros2_control/lbr_controllers.yaml" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup hardware.launch.py moveit:=true model:=iiwa14 sim:=true base_frame:=world" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
-RUN echo "ros2 run lbr_moveit_py move_robot --ros-args -r __ns:=/lbr" >> ~/.bash_history
+RUN echo "ros2 launch lbr_moveit_py hello_moveit.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
