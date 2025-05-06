@@ -147,6 +147,16 @@ RUN apt install -y --no-install-recommends ros-humble-kinematics-interface
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release" && \
     /bin/bash -c "source /root/ros2_ws/install/setup.bash"
 
+# pyfri
+WORKDIR /root/
+RUN git clone https://github.com/lbr-stack/pyfri.git && \
+    cd pyfri && \
+    git submodule set-url pybind https://github.com/pybind/pybind11.git && \
+    git submodule update --init --recursive && \
+    git reset --hard 302317a && \
+    export FRI_CLIENT_VERSION=1.15 && \
+    pip install .
+
 # Generates bash commands
 WORKDIR /root/ros2_ws/src/
 # visualize a model with rviz
@@ -230,3 +240,8 @@ RUN echo "cp --force /yaml/lbr_controllers_moveit.yaml /root/ros2_ws/src/lbr-sta
 RUN echo "ros2 launch lbr_bringup hardware.launch.py moveit:=true model:=iiwa14 sim:=true base_frame:=world" >> ~/.bash_history
 RUN echo "ros2 launch lbr_bringup move_group.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
 RUN echo "ros2 launch lbr_moveit_py hello_moveit.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
+
+# hand-guiding with pyfri
+RUN echo "python3 hand_guide.py --lbr-ver 14" >> ~/.bash_history
+RUN echo "python3 joint_teleop.py" >> ~/.bash_history
+RUN echo "python3 task_teleop.py --lbr-ver 14" >> ~/.bash_history

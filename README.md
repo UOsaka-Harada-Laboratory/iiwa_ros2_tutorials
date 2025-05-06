@@ -51,6 +51,7 @@
     ```bash
     ./utils/XXX.sh
     ```
+    - You can also use pyfri to easily test [demos](https://lbr-stack.readthedocs.io/en/latest/pyfri/doc/example_applications.html#example-applications)
 
 ### [./utils/bringup_lbr_urdf_ctrl.sh](./utils/bringup_lbr_urdf_ctrl.sh)
 
