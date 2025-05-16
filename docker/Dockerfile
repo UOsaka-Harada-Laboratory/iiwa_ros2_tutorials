@@ -151,11 +151,8 @@ RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor p
 
 # pyfri
 WORKDIR /root/
-RUN git clone https://github.com/lbr-stack/pyfri.git && \
-    cd pyfri && \
-    git submodule set-url pybind https://github.com/pybind/pybind11.git && \
-    git submodule update --init --recursive && \
-    git reset --hard 302317a && \
+COPY ./ros2_ws/src/pyfri /root/pyfri
+RUN cd /root/pyfri && \
     export FRI_CLIENT_VERSION=1.15 && \
     pip install .
 
