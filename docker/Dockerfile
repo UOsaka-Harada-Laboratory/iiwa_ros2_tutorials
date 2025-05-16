@@ -154,7 +154,8 @@ WORKDIR /root/
 COPY ./ros2_ws/src/pyfri /root/pyfri
 RUN cd /root/pyfri && \
     export FRI_CLIENT_VERSION=1.15 && \
-    pip install .
+    pip install . && \
+    pip install "numpy<2.0"
 
 # Generates bash commands
 WORKDIR /root/ros2_ws/src/
@@ -243,6 +244,7 @@ RUN echo "ros2 launch lbr_moveit_py hello_moveit_action.launch.py mode:=hardware
 RUN echo "ros2 launch lbr_moveit_py hello_moveit_commander.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
 
 # hand-guiding with pyfri
+# https://lbr-stack.readthedocs.io/en/latest/pyfri/doc/example_applications.html
 RUN echo "cd /root/pyfri/examples && python3 hand_guide.py --lbr-ver 14" >> ~/.bash_history
 RUN echo "cd /root/pyfri/examples && python3 joint_teleop.py" >> ~/.bash_history
 RUN echo "cd /root/pyfri/examples && python3 task_teleop.py --lbr-ver 14" >> ~/.bash_history
