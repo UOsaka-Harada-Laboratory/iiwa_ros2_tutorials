@@ -248,3 +248,4 @@ RUN echo "ros2 launch lbr_moveit_py hello_moveit_commander.launch.py mode:=hardw
 RUN echo "cd /root/pyfri/examples && python3 hand_guide.py --lbr-ver 14" >> ~/.bash_history
 RUN echo "cd /root/pyfri/examples && python3 joint_teleop.py" >> ~/.bash_history
 RUN echo "cd /root/pyfri/examples && python3 task_teleop.py --lbr-ver 14" >> ~/.bash_history
+RUN echo "cd /root/pyfri/examples && python3 hello_ik.py --lbr-ver 14" >> ~/.bash_history

@@ -22,6 +22,7 @@ services:
             # shared dirs
             - ./yaml:/yaml
             - ./ros2_ws/src/lbr_fri_ros2_stack:/root/ros2_ws/src/lbr-stack/src/lbr_fri_ros2_stack
+            - ./docker/ros2_ws/src/pyfri:/root/pyfri
         privileged: true
         tty: true
         network_mode: host
