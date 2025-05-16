@@ -1,3 +1,6 @@
 [submodule "ros2_ws/src/lbr_fri_ros2_stack"]
 	path = ros2_ws/src/lbr_fri_ros2_stack
 	url = git@github.com:takuya-ki/lbr_fri_ros2_stack.git
+[submodule "docker/ros2_ws/src/pyfri"]
+	path = docker/ros2_ws/src/pyfri
+	url = git@github.com:takuya-ki/pyfri.git
