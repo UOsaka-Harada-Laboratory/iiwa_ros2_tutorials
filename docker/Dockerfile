@@ -111,9 +111,11 @@ RUN git clone https://github.com/ros-planning/moveit_msgs.git -b humble --recurs
 RUN git clone https://github.com/ros-planning/moveit_resources.git -b humble --recursive && \
     cd moveit_resources && \
     git reset --hard 45ea355
-RUN git clone https://github.com/moveit/moveit2.git -b 2.5.6 --recursive && \
+RUN git clone https://github.com/moveit/moveit2.git -b humble --recursive && \
     cd moveit2 && \
-    git reset --hard c2b0e3d
+    git reset --hard a60ed9f && \
+    cd .. && \
+    vcs import < moveit2/moveit2.repos
 COPY ./ros2_ws/src/moveit_configs_utils/launches.py /root/ros2_ws/src/moveit2/moveit_configs_utils/moveit_configs_utils/
 RUN git clone https://github.com/ros-planning/moveit_task_constructor.git -b humble --recursive && \
     cd moveit_task_constructor && \
@@ -244,6 +246,6 @@ RUN echo "ros2 launch lbr_moveit_py hello_moveit_action.launch.py mode:=hardware
 RUN echo "ros2 launch lbr_moveit_py hello_moveit_commander.launch.py mode:=hardware model:=iiwa14" >> ~/.bash_history
 
 # hand-guiding with pyfri
-RUN echo "python3 hand_guide.py --lbr-ver 14" >> ~/.bash_history
-RUN echo "python3 joint_teleop.py" >> ~/.bash_history
-RUN echo "python3 task_teleop.py --lbr-ver 14" >> ~/.bash_history
+RUN echo "cd /root/pyfri/examples && python3 hand_guide.py --lbr-ver 14" >> ~/.bash_history
+RUN echo "cd /root/pyfri/examples && python3 joint_teleop.py" >> ~/.bash_history
+RUN echo "cd /root/pyfri/examples && python3 task_teleop.py --lbr-ver 14" >> ~/.bash_history
