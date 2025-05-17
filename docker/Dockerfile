@@ -1,5 +1,5 @@
 # base image
-FROM nvidia/opengl:1.2-glvnd-devel-ubuntu22.04
+FROM ubuntu:22.04
 
 # setting environmental variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -15,8 +15,6 @@ ENV DISPLAY $DISPLAY
 ENV WAYLAND_DISPLAY $WAYLAND_DISPLAY
 ENV XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
 ENV PULSE_SERVER $PULSE_SERVER
-ENV __NV_PRIME_RENDER_OFFLOAD 1
-ENV __GLX_VENDOR_LIBRARY_NAME nvidia
 
 # setting time zone
 RUN apt update && apt install -y --no-install-recommends tzdata
@@ -29,11 +27,8 @@ RUN apt update -y && apt upgrade -y && apt install -y --no-install-recommends \
     iputils-ping net-tools \
     libxkbcommon-x11-0 \
     gnome-screenshot \
-    libcanberra-gtk* \
     build-essential \
     libgl1-mesa-dev \
-    nvidia-settings \
-    nvidia-prime \
     lsb-release \
     libudev-dev \
     imagemagick \
