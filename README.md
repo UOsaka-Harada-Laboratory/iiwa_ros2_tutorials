@@ -65,11 +65,11 @@
 
 <img src=image/demo_moveit_simulation_gui.gif width=500>  
 
-### [./utils/demo_moveit_simulation_cpp.sh](./utils/demo_moveit_action_simulation_cpp.sh)
+### [./utils/demo_moveit_action_simulation_cpp.sh](./utils/demo_moveit_action_simulation_cpp.sh)
 
 <img src=image/demo_moveit_action_simulation_cpp.gif width=500>  
 
-### [./utils/demo_moveit_simulation_py.sh](./utils/demo_moveit_action_simulation_py.sh)
+### [./utils/demo_moveit_action_simulation_py.sh](./utils/demo_moveit_action_simulation_py.sh)
 
 <img src=image/demo_moveit_action_simulation_py.gif width=500>  
 
