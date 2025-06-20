@@ -62,13 +62,14 @@ RUN apt install -y --no-install-recommends \
     python3-colcon-mixin \
     ros-humble-desktop \
     ros-humble-rmw-cyclonedds-cpp \
-    ros-humble-ament-cmake \
-    ros-humble-warehouse-* \
     ros-humble-gazebo-* \
-    ros-humble-ros-gz* \
-    ros-humble-moveit* \
-    ros-humble-ros2-control \
-    ros-humble-ros2-controllers \
+    ros-humble-ros-gz \
+    ros-humble-ign-ros2-control \
+    ros-humble-ign-ros2-control-demos \
+    ros-humble-warehouse-* \
+    ros-humble-ros-testing \
+    ros-humble-moveit \
+    ros-humble-moveit-visual-tools \
     ros-dev-tools \
     gazebo \
     && echo "export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp" >> ~/.bashrc
@@ -79,9 +80,9 @@ RUN mkdir -p /root/ros2_ws/src
 WORKDIR /root/ros2_ws
 RUN	/bin/bash -c "source /opt/ros/humble/setup.bash && colcon build"
 RUN	echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
-	echo "source /root/ros2_ws/install/setup.bash" >> ~/.bashrc && \
-	echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/root/ros2_ws" >> ~/.bashrc && \
-	echo "export ROS_WORKSPACE=/root/ros2_ws" >> ~/.bashrc && \
+    echo "source /root/ros2_ws/install/setup.bash" >> ~/.bashrc && \
+    echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/root/ros2_ws" >> ~/.bashrc && \
+    echo "export ROS_WORKSPACE=/root/ros2_ws" >> ~/.bashrc && \
     echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc && \
     echo "export _colcon_cd_root=/opt/ros/humble/" >> ~/.bashrc
 
@@ -98,22 +99,40 @@ RUN git clone https://github.com/ros-planning/moveit_resources.git -b humble --r
     git reset --hard 45ea355
 RUN git clone https://github.com/moveit/moveit2.git -b humble --recursive && \
     cd moveit2 && \
-    git reset --hard a60ed9f && \
-    cd .. && \
-    vcs import < moveit2/moveit2.repos
+    git reset --hard 7ffdfd3
 COPY ./ros2_ws/src/moveit_configs_utils/launches.py /root/ros2_ws/src/moveit2/moveit_configs_utils/moveit_configs_utils/
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/COLCON_IGNORE"
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/robot_interaction/COLCON_IGNORE"
+RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/hybrid_planning/COLCON_IGNORE"
 RUN git clone https://github.com/ros-planning/moveit_task_constructor.git -b humble --recursive && \
     cd moveit_task_constructor && \
     git reset --hard 7566349
 RUN git clone https://github.com/ros-planning/srdfdom.git -b ros2 --recursive && \
     cd srdfdom && \
     git reset --hard c118b35
+RUN git clone https://github.com/ros-controls/ros2_control.git -b humble --recursive && \
+    cd ros2_control && \
+    git reset --hard 0af922d
+RUN git clone https://github.com/ros-controls/ros2_controllers.git -b humble --recursive && \
+    cd ros2_controllers && \
+    git reset --hard 3557ed0
+RUN git clone https://github.com/takuya-ki/gazebo-pkgs.git -b humble && \
+    cd gazebo-pkgs && \
+    git reset --hard 233cc8b
+RUN git clone https://github.com/roboticsgroup/roboticsgroup_upatras_gazebo_plugins.git -b ros2 && \
+    cd roboticsgroup_upatras_gazebo_plugins && \
+    git reset --hard 8bf90f5
+RUN echo "export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/root/ros2_ws/build/gazebo_grasp_plugin" >> ~/.bashrc
+RUN echo "export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/root/ros2_ws/build/roboticsgroup_upatras_gazebo_plugins" >> ~/.bashrc
+RUN echo "export PLUGINLIB_EXPORT_CLASS=$PLUGINLIB_EXPORT_CLASS:/root/ros2_ws/install/iiwa_gazebo/lib" >> ~/.bashrc
+RUN echo "export IGN_IP=127.0.0.1" >> ~/.bashrc
+
 WORKDIR /root/ros2_ws/
 RUN /bin/bash -c "rosdep init && rosdep update && rosdep install -r --from-paths . --ignore-src --rosdistro humble -y"
 
-RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/COLCON_IGNORE"
-RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/robot_interaction/COLCON_IGNORE"
-RUN /bin/bash -c "touch /root/ros2_ws/src/moveit2/moveit_ros/hybrid_planning/COLCON_IGNORE"
+# to remove warnings on setuptools that appear when building with colcon
+RUN pip install setuptools==58.2.0
+
 WORKDIR /root/ros2_ws/
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --executor parallel --parallel-workers $PARALLELWORKERS --symlink-install --mixin release"
 RUN /bin/bash -c "source /opt/ros/humble/setup.bash && rm /root/ros2_ws/src/moveit2/COLCON_IGNORE && colcon build --executor sequential --symlink-install --mixin release"
