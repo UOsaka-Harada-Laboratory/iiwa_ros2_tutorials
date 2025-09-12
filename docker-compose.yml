@@ -11,6 +11,9 @@ services:
             # to transport X11 application window
             - DISPLAY=$DISPLAY
             - QT_X11_NO_MITSHM=1
+            - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+            - FASTDDS_SHM_DISABLE=1
+            - ROS_DOMAIN_ID=0
         volumes:
             # for USB devices
             - /dev:/dev
