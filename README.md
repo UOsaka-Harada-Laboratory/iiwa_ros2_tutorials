@@ -18,7 +18,7 @@
 ### LBR iiwa 14 R820
 
 - [Ubuntu 22.04 PC](https://ubuntu.com/certified/laptops?q=&limit=20&vendor=Dell&vendor=Lenovo&vendor=HP&release=22.04+LTS)
-  - [ROS2 HUmble](https://wiki.ros.org/humble/Installation/Ubuntu)
+  - [ROS2 Humble](https://wiki.ros.org/humble/Installation/Ubuntu)
   - [lbr_fri_ros2_stack](https://github.com/lbr-stack/lbr_fri_ros2_stack/tree/humble?tab=readme-ov-file)
   - [Byobu](https://www.byobu.org/)
 - [LBR iiwa](https://www.kuka.com/en-us/products/robotics-systems/industrial-robots/lbr-iiwa) 
@@ -81,4 +81,4 @@ We always welcome collaborators!
 
 ## License
 
-This software is released under the MIT License, see [LICENSE](./LICENSE).
+This software is released under the BSD 3-Clause License, see [LICENSE](./LICENSE).

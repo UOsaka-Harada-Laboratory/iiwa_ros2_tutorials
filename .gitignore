@@ -3,3 +3,5 @@ __pycache__
 *.AppImage
 *.vscode
 build.log
+*.claude
+CLAUDE.md
