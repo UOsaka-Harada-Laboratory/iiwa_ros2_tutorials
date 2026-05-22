@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# stop a previous run of this byobu session and any leftover ROS processes in
+# the container. Stale launches from earlier demo runs keep their nodes alive
+# and exhaust DDS discovery, which makes the controller spawners fail with
+# "Controller manager not available".
+byobu kill-session -t bringup_lbr_urdf_ctrl 2>/dev/null
+docker exec iiwa_ros2_container bash -c "pkill -f 'ros2 launc[h]' 2>/dev/null; sleep 4; pkill -9 -f 'ros2 launc[h]' 2>/dev/null; pkill -9 -f 'ros2_contro[l]_node' 2>/dev/null; pkill -9 -f 'robot_state_publishe[r]' 2>/dev/null; pkill -9 -f 'rviz[2]' 2>/dev/null; pkill -9 -f 'move_grou[p]' 2>/dev/null; pkill -9 -f 'static_transform_publishe[r]' 2>/dev/null; true"
+
 byobu new-session -d -s bringup_lbr_urdf_ctrl
 byobu select-pane -t 0
 byobu split-window -v
