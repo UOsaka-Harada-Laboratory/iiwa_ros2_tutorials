@@ -12,7 +12,8 @@ services:
             - DISPLAY=$DISPLAY
             - QT_X11_NO_MITSHM=1
             - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-            - ROS_DOMAIN_ID=0
+            # Keep this workspace isolated from other host-network ROS 2 containers.
+            - ROS_DOMAIN_ID=${IIWA_ROS_DOMAIN_ID:-73}
         volumes:
             # for USB devices
             - /dev:/dev
