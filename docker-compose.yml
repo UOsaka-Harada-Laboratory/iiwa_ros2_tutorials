@@ -8,16 +8,15 @@ services:
                 PARALLELWORKERS: 4
         container_name: iiwa_ros2_container
         environment:
-            # to transport X11 application window
+            # X11 forwarding for RViz and joint_state_publisher_gui.
             - DISPLAY=$DISPLAY
             - QT_X11_NO_MITSHM=1
-            - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-            - FASTDDS_SHM_DISABLE=1
+            - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
             - ROS_DOMAIN_ID=0
         volumes:
             # for USB devices
             - /dev:/dev
-            # to tansport X11 application (require xhost local:)
+            # X11 socket for GUI applications. Allow access with `xhost local:`.
             - /tmp/.X11-unix:/tmp/.X11-unix:rw
             # shared dirs
             - ./yaml:/yaml

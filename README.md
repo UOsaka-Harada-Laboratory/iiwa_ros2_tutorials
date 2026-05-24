@@ -47,9 +47,9 @@
     ```
 3. Kill the processes at step 2 and execute the demos with the real robot
     - You can find how to execute [demos](https://lbr-stack.readthedocs.io/en/latest/lbr_fri_ros2_stack/lbr_demos/doc/lbr_demos.html)
-    - You can find scripts in iiwa_ros2_tutorials/utils to execute all necessary commands for each demonstration
+    - Run one of the demo scripts in `utils/`.
     ```bash
-    ./utils/XXX.sh
+    ./utils/demo_moveit_action_simulation_py.sh
     ```
     - You can also use pyfri to easily test [demos](https://lbr-stack.readthedocs.io/en/latest/pyfri/doc/example_applications.html#example-applications)
 

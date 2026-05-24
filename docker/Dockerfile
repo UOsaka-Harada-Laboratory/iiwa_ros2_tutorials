@@ -1,7 +1,7 @@
 # base image
 FROM ubuntu:22.04
 
-# setting environmental variables
+# setting environment variables
 ENV DEBIAN_FRONTEND noninteractive
 ARG MAKEFLAGS
 ARG PARALLELWORKERS
@@ -56,7 +56,7 @@ RUN /bin/bash -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/sh
 RUN add-apt-repository ppa:kisak/kisak-mesa -y && apt update -y
 
 # installing ROS2 packages and colcon build system with mixin
-# changing the middleware (CycloneDDS recommended for MoveIt2)
+# CycloneDDS is the default middleware used by docker-compose.yml.
 RUN apt install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-colcon-mixin \

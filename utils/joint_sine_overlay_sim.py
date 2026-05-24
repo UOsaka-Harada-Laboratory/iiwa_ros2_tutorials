@@ -15,13 +15,12 @@ session state. It takes the current joint configuration from ``joint_states``
 """
 
 import math
-import sys
+from typing import Optional
 
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 
-# import lbr_fri_idl
 from lbr_fri_idl.msg import LBRJointPositionCommand
 
 
@@ -29,24 +28,22 @@ class JointSineOverlaySimNode(Node):
     def __init__(self) -> None:
         super().__init__("joint_sine_overlay_sim")
 
-        # parameters
         self._robot_name = self.declare_parameter("robot_name", "lbr").value
         self._amplitude = self.declare_parameter("amplitude", 0.2).value  # rad
         self._frequency = self.declare_parameter("frequency", 0.25).value  # Hz
         self._joint = self.declare_parameter("joint", 3).value  # 0-indexed, A4
         self._command_rate = self.declare_parameter("command_rate", 100.0).value  # Hz
+        self._validate_parameters()
 
         self._joint_names = [f"{self._robot_name}_A{i}" for i in range(1, 8)]
         self._dt = 1.0 / float(self._command_rate)
         self._phase = 0.0
-        self._initial_position = None  # captured from the first joint_states message
+        self._initial_position: Optional[list] = None
 
-        # create publisher to command/joint_position
         self._command_pub = self.create_publisher(
             LBRJointPositionCommand, "command/joint_position", 1
         )
 
-        # create subscription to joint_states (instead of the FRI-only state topic)
         self._joint_state_sub = self.create_subscription(
             JointState, "joint_states", self._on_joint_state, 1
         )
@@ -60,6 +57,18 @@ class JointSineOverlaySimNode(Node):
         )
         self.get_logger().info("Waiting for joint_states...")
 
+    def _validate_parameters(self) -> None:
+        if not 0 <= int(self._joint) < 7:
+            raise ValueError(f"joint must be in [0, 6], got {self._joint}.")
+        if float(self._command_rate) <= 0.0:
+            raise ValueError("command_rate must be greater than 0.")
+        if float(self._frequency) < 0.0:
+            raise ValueError("frequency must be greater than or equal to 0.")
+        self._joint = int(self._joint)
+        self._amplitude = float(self._amplitude)
+        self._frequency = float(self._frequency)
+        self._command_rate = float(self._command_rate)
+
     def _on_joint_state(self, joint_state: JointState) -> None:
         if self._initial_position is not None:
             return
@@ -69,7 +78,6 @@ class JointSineOverlaySimNode(Node):
                 float(name_to_position[name]) for name in self._joint_names
             ]
         except KeyError:
-            # joint_states does not (yet) contain all lbr joints
             return
         self.get_logger().info(
             f"Captured initial joint configuration: {self._initial_position}"
@@ -88,12 +96,12 @@ class JointSineOverlaySimNode(Node):
 
 
 def main(args: list = None) -> None:
-    rclpy.init(args=args if args is not None else sys.argv)
+    rclpy.init(args=args)
     node = JointSineOverlaySimNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
+        node.get_logger().info("Interrupted; shutting down.")
     finally:
         node.destroy_node()
         if rclpy.ok():
